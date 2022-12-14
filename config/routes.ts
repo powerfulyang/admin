@@ -11,7 +11,6 @@ export default [
   {
     path: '/user/login',
     layout: false,
-    component: '@/layouts',
     routes: [
       {
         path: '/user/login',
@@ -21,7 +20,6 @@ export default [
   },
   {
     path: '/',
-    component: '@/layouts',
     routes: [
       {
         path: '/',
@@ -29,7 +27,6 @@ export default [
       },
       {
         path: '/user',
-        icon: 'crown',
         access: 'canAdmin',
         routes: [
           {
@@ -43,10 +40,5 @@ export default [
         ],
       },
     ],
-  },
-  {
-    path: '*',
-    component: './404',
-    layout: false,
   },
 ];

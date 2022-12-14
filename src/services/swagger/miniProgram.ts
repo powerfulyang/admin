@@ -8,7 +8,7 @@ export async function MiniProgramControllerCode2Session(
   params: API.MiniProgramControllerCode2SessionParams,
   options?: { [key: string]: any },
 ) {
-  return request<any>('/api/mini-program/login', {
+  return request<Record<string, any>>('/api/mini-program/login', {
     method: 'GET',
     params: {
       ...params,

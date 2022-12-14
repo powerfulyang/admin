@@ -1,16 +1,27 @@
-import RightContent from '@/components/RightContent';
-import { LinkOutlined } from '@ant-design/icons';
+import type { RunTimeLayoutConfig } from '@@/plugin-layout/types';
+import { LinkOutlined, TeamOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { PageLoading } from '@ant-design/pro-components';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { history, Link } from '@umijs/max';
-import React from 'react';
-import type { RunTimeLayoutConfig } from '@@/plugin-layout/types';
+import { Button, Result } from 'antd';
+import { stringify } from 'querystring';
+import type { ReactElement } from 'react';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
-import { getCurrentUser, queryCurrentUserMenus } from './services/swagger/user';
+import { getCurrentUser, logout, queryCurrentUserMenus } from './services/swagger/user';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+
+const goLogin = () => {
+  history.replace({
+    pathname: loginPath,
+    search: stringify({
+      redirect: window.location.href,
+    }),
+  });
+};
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -18,75 +29,55 @@ const loginPath = '/user/login';
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
   currentUser?: API.User;
-  loading?: boolean;
-  fetchUserInfo?: () => Promise<API.User | undefined>;
+  name?: string;
+  avatar?: string;
 }> {
-  const fetchUserInfo = async () => {
-    try {
-      return await getCurrentUser({
-        skipErrorHandler: true,
-      });
-    } catch (error) {
-      history.push(loginPath);
-    }
-    return undefined;
+  const fetchUserInfo = () => {
+    return getCurrentUser({
+      skipErrorHandler: true,
+    });
   };
   // 如果不是登录页面，执行
   if (window.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
     return {
-      fetchUserInfo,
       currentUser,
       settings: defaultSettings,
+      name: currentUser?.nickname,
+      avatar: currentUser?.avatar,
     };
   }
   return {
-    fetchUserInfo,
     settings: defaultSettings,
   };
 }
 
+const iconMap = {
+  'user-manage': <TeamOutlined />,
+};
+
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
-export const layout: RunTimeLayoutConfig = ({ initialState }) => {
+export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState, loading }) => {
   return {
-    rightContentRender: () => <RightContent />,
     waterMarkProps: {
       content: initialState?.currentUser?.nickname,
     },
     menu: {
-      request: () => {
-        return queryCurrentUserMenus();
+      request: async () => {
+        const menus = await queryCurrentUserMenus();
+        return menus.map((menu) => {
+          return { ...menu, icon: iconMap['user-manage'] };
+        });
       },
       locale: false,
     },
-    footerRender: () => null,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
+        goLogin();
       }
     },
-    layoutBgImgList: [
-      {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/D2LWSqNny4sAAAAAAAAAAAAAFl94AQBr',
-        left: 85,
-        bottom: 100,
-        height: '303px',
-      },
-      {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/C2TWRpJpiC0AAAAAAAAAAAAAFl94AQBr',
-        bottom: -68,
-        right: -45,
-        height: '303px',
-      },
-      {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/F6vSTbj8KpYAAAAAAAAAAAAAFl94AQBr',
-        bottom: 0,
-        left: 0,
-        width: '331px',
-      },
-    ],
     links: isDev
       ? [
           <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
@@ -95,13 +86,28 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
           </Link>,
         ]
       : [],
-    menuHeaderRender: undefined,
     // 自定义 403 页面
-    // unAccessible: <div>unAccessible</div>,
+    unAccessible: (
+      <Result
+        status="403"
+        title="403"
+        subTitle="您没有访问权限，请联系管理员"
+        extra={
+          <Button type="primary" onClick={() => goLogin()}>
+            切换账号
+          </Button>
+        }
+      />
+    ),
     // 增加一个 loading 的状态
     childrenRender: (children) => {
-      if (initialState?.loading) return <PageLoading />;
+      if (loading) return <PageLoading />;
       return children;
+    },
+    logout: async () => {
+      await logout();
+      await setInitialState((s) => ({ ...s, currentUser: undefined }));
+      goLogin();
     },
     ...initialState?.settings,
   };
@@ -114,4 +120,17 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
  */
 export const request = {
   ...errorConfig,
+};
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      cacheTime: 0,
+    },
+  },
+});
+
+export const rootContainer = (container: ReactElement) => {
+  return <QueryClientProvider client={queryClient}>{container}</QueryClientProvider>;
 };

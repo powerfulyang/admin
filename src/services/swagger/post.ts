@@ -7,7 +7,7 @@ export async function PostControllerCreatePost(
   body: API.CreatePostDto,
   options?: { [key: string]: any },
 ) {
-  return request<any>('/api/post', {
+  return request<API.Post>('/api/post', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

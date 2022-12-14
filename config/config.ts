@@ -103,9 +103,10 @@ export default defineConfig({
   openAPI: [
     {
       requestLibPath: "import { request } from '@umijs/max'",
-      schemaPath: 'https://powerfulyang.com/api/swagger-json',
+      schemaPath: 'https://local.powerfulyang.com/api/swagger-json',
       mock: false,
       projectName: 'swagger',
     },
   ],
+  requestRecord: {},
 });

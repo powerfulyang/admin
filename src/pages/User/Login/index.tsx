@@ -1,3 +1,5 @@
+import { loginWithEmail } from '@/services/swagger/user';
+import { getPageQuery } from '@/utils/getPageQuery';
 import {
   GithubOutlined,
   GoogleCircleFilled,
@@ -8,12 +10,10 @@ import {
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { useMutation } from '@tanstack/react-query';
-import React, { useEffect } from 'react';
-import { loginWithEmail } from '@/services/swagger/user';
 import { history, useModel } from '@umijs/max';
 import { Form, message } from 'antd';
+import React, { useEffect } from 'react';
 import { flushSync } from 'react-dom';
-import { getPageQuery } from '@/utils/getPageQuery';
 
 const ActionIcons = () => {
   const langClassName = useEmotionCss(({ token }) => {
@@ -91,6 +91,7 @@ const Login: React.FC = () => {
   }, [form]);
 
   const loginMutation = useMutation({
+    mutationKey: ['login'],
     mutationFn: (values: API.UserLoginDto) => {
       return loginWithEmail(values);
     },
@@ -105,11 +106,14 @@ const Login: React.FC = () => {
         localStorage.removeItem('login.password');
       }
       flushSync(() => {
-        setInitialState({
+        setInitialState((prev) => ({
+          ...prev,
           currentUser: data,
-        });
+          name: data.nickname,
+          avatar: data.avatar,
+        }));
       });
-      history.push(redirect);
+      history.replace(redirect);
     },
   });
 
@@ -126,12 +130,13 @@ const Login: React.FC = () => {
             minWidth: 280,
             maxWidth: '75vw',
           }}
-          logo={<img alt="logo" src="https://admin.powerfulyang.com/static/logo.e004bb82.png" />}
+          logo={<img alt="logo" src="/logo.png" />}
           title="中央登录中心"
           subTitle="欢迎登录"
           actions={['其他登录方式', <ActionIcons key="icons" />]}
-          onFinish={(values) => {
-            return loginMutation.mutateAsync(values);
+          onFinish={async (values) => {
+            await loginMutation.mutateAsync(values);
+            return Promise.resolve();
           }}
           form={form}
         >

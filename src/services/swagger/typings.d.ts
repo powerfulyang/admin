@@ -41,9 +41,19 @@ declare namespace API {
   };
 
   type CreateBucketDto = {
-    name: string;
+    /** bucket 在系统中的名称 */
+    name?: string;
     Region: string;
     tencentCloudAccount: Record<string, any>;
+    id?: number;
+    Bucket?: string;
+    ACL?: Record<string, any>;
+    CORSRules?: Record<string, any>[];
+    RefererConfiguration?: Record<string, any>;
+    createAt?: string;
+    updateAt?: string;
+    assets?: Asset[];
+    public?: boolean;
   };
 
   type CreateFeedDto = {
@@ -59,6 +69,15 @@ declare namespace API {
     content: string;
     posterId?: number;
     createBy: User;
+    summary?: string;
+    tags?: string[];
+    public?: boolean;
+    publishYear?: number;
+    updateBy?: User;
+    poster?: Asset;
+    logs?: PostLog[];
+    createAt?: string;
+    updateAt?: string;
   };
 
   type CreateTencentCloudAccountDto = {
@@ -66,6 +85,20 @@ declare namespace API {
     SecretId: string;
     SecretKey: string;
     AppId: string;
+    id?: number;
+    buckets?: CosBucket[];
+  };
+
+  type editUserByIdParams = {
+    id: string;
+  };
+
+  type EditUserDto = {
+    /** User email */
+    email: string;
+    nickname: string;
+    bio: string;
+    avatar?: string;
   };
 
   type Family = {
@@ -101,7 +134,12 @@ declare namespace API {
   };
 
   type getPublicPostByIdParams = {
-    id: string;
+    id: number;
+    versions: string[];
+  };
+
+  type GithubControllerGetUserInfoParams = {
+    login: string;
   };
 
   type infiniteQueryPublicAssetParams = {
@@ -149,25 +187,36 @@ declare namespace API {
   };
 
   type PatchPostDto = {
-    id: number;
+    /** post id */
+    id?: number;
     title: string;
     content: string;
     posterId?: number;
     updateBy: User;
+    summary?: string;
+    tags?: string[];
+    public?: boolean;
+    publishYear?: number;
+    createBy?: User;
+    poster?: Asset;
+    logs?: PostLog[];
+    createAt?: string;
+    updateAt?: string;
   };
 
   type Post = {
     /** post id */
     id: number;
     title: string;
-    urlTitle: string;
     content: string;
+    summary: string;
     tags: string[];
     public: boolean;
     publishYear: number;
     createBy: User;
     updateBy: User;
     poster: Asset;
+    logs: PostLog[];
     createAt: string;
     updateAt: string;
   };
@@ -182,10 +231,27 @@ declare namespace API {
     id: number;
   };
 
+  type PostLog = {
+    id: number;
+    post: Post;
+    title: string;
+    content: string;
+    createAt: string;
+    updateAt: string;
+  };
+
+  type queryPublicPostsParams = {
+    publishYear?: number;
+  };
+
   type queryPublicTimelineParams = {
     prevCursor: string;
     nextCursor: string;
     take: string;
+  };
+
+  type queryUserByIdParams = {
+    id: string;
   };
 
   type RandomControllerGetAvatarParams = {
@@ -215,7 +281,7 @@ declare namespace API {
     updateBy: User;
   };
 
-  type UploadFilesDto = {
+  type UploadAssetsDto = {
     assets: any[];
   };
 
@@ -245,5 +311,11 @@ declare namespace API {
     email: string;
     /** User password */
     password: string;
+  };
+
+  type ViewCountDto = {
+    createAt: string;
+    requestCount: number;
+    distinctIpCount: number;
   };
 }

@@ -14,7 +14,7 @@ export async function AssetControllerDeleteAsset(options?: { [key: string]: any 
 export async function AssetControllerSaveAssetToBucket(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.AssetControllerSaveAssetToBucketParams,
-  body: API.UploadFilesDto,
+  body: API.UploadAssetsDto,
   options?: { [key: string]: any },
 ) {
   const { bucketName: param0, ...queryParams } = params;
@@ -31,7 +31,7 @@ export async function AssetControllerSaveAssetToBucket(
     }
   });
 
-  return request<any>(`/api/asset/${param0}`, {
+  return request<API.Asset[]>(`/api/asset/${param0}`, {
     method: 'POST',
     params: { ...queryParams },
     data: formData,
@@ -42,7 +42,7 @@ export async function AssetControllerSaveAssetToBucket(
 
 /** 此处后端没有提供注释 GET /api/asset/pHash/distance */
 export async function AssetControllerPHashMap(options?: { [key: string]: any }) {
-  return request<any>('/api/asset/pHash/distance', {
+  return request<Record<string, any>>('/api/asset/pHash/distance', {
     method: 'GET',
     ...(options || {}),
   });

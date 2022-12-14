@@ -14,6 +14,7 @@ export default {
       target: 'https://local.powerfulyang.com',
       changeOrigin: true,
       pathRewrite: { '^': '' },
+      cookieDomainRewrite: { 'powerfulyang.com': 'localhost' },
     },
   },
   /**
@@ -24,6 +25,7 @@ export default {
       target: 'https://qa.powerfulyang.com',
       changeOrigin: true,
       pathRewrite: { '^': '' },
+      cookieDomainRewrite: { 'powerfulyang.com': 'localhost' },
     },
   },
   prod: {
@@ -31,6 +33,7 @@ export default {
       target: 'https://powerfulyang.com',
       changeOrigin: true,
       pathRewrite: { '^': '' },
+      cookieDomainRewrite: { 'powerfulyang.com': 'localhost' },
     },
   },
 };

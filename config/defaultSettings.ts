@@ -12,12 +12,13 @@ const Settings: LayoutSettings & {
   colorPrimary: '#1677FF',
   layout: 'mix',
   contentWidth: 'Fluid',
-  fixedHeader: false,
+  fixedHeader: true,
   fixSiderbar: true,
   pwa: false,
   logo: 'https://powerfulyang.com/icons/apple-touch-icon.png',
   siderMenuType: 'sub',
   splitMenus: false,
+  footerRender: false,
 };
 
 export default Settings;

@@ -15,7 +15,7 @@ export async function BucketControllerCreateNewBucket(
   body: API.CreateBucketDto,
   options?: { [key: string]: any },
 ) {
-  return request<any>('/api/bucket', {
+  return request<Record<string, any>>('/api/bucket', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
