@@ -2,9 +2,8 @@ import type { RunTimeLayoutConfig } from '@@/plugin-layout/types';
 import { LinkOutlined, TeamOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { PageLoading } from '@ant-design/pro-components';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { history, Link } from '@umijs/max';
-import { Button, Result } from 'antd';
+import { Button, Modal, Result } from 'antd';
 import { stringify } from 'querystring';
 import type { ReactElement } from 'react';
 import defaultSettings from '../config/defaultSettings';
@@ -75,7 +74,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState, loa
       const { location } = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== loginPath) {
-        goLogin();
+        history.push(loginPath);
       }
     },
     links: isDev
@@ -122,15 +121,19 @@ export const request = {
   ...errorConfig,
 };
 
-const queryClient = new QueryClient({
+export const rootContainer = (element: ReactElement) => {
+  return element;
+};
+
+export const reactQuery = {
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       cacheTime: 0,
     },
   },
-});
+};
 
-export const rootContainer = (container: ReactElement) => {
-  return <QueryClientProvider client={queryClient}>{container}</QueryClientProvider>;
+export const onRouteChange = () => {
+  Modal.destroyAll();
 };

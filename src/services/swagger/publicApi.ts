@@ -31,9 +31,17 @@ export async function getPublicAssetById(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/public/chat */
-export async function PublicControllerChat(options?: { [key: string]: any }) {
-  return request<any>('/api/public/chat', {
+/** 此处后端没有提供注释 POST /api/public/bing-ai/chat */
+export async function PublicControllerChatWithBingAI(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/api/public/bing-ai/chat', {
+    method: 'POST',
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /api/public/chat-gpt/chat */
+export async function PublicControllerChatWithChatGPT(options?: { [key: string]: any }) {
+  return request<any>('/api/public/chat-gpt/chat', {
     method: 'POST',
     ...(options || {}),
   });

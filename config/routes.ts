@@ -39,6 +39,44 @@ export default [
           },
         ],
       },
+      {
+        path: '/system',
+        access: 'canAdmin',
+        routes: [
+          {
+            path: '/system/role',
+            component: './System/Role',
+          },
+          {
+            path: '/system/menu',
+            component: './System/Menu',
+          },
+        ],
+      },
+      {
+        path: '/asset',
+        access: 'canAdmin',
+        routes: [
+          {
+            path: '/asset/list',
+            component: './Asset/List',
+          },
+        ],
+      },
+      {
+        path: '/post',
+        access: 'canAdmin',
+        routes: [
+          {
+            path: '/post/list',
+            component: './Post/List',
+          },
+        ],
+      },
+      {
+        path: '*',
+        component: './404',
+      },
     ],
   },
 ];

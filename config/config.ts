@@ -4,7 +4,7 @@ import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
 
-const { REACT_APP_ENV = 'dev' } = process.env;
+const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
   /**
@@ -12,6 +12,8 @@ export default defineConfig({
    * @doc https://umijs.org/docs/api/config#hash
    */
   hash: true,
+  npmClient: 'pnpm',
+  devtool: REACT_APP_ENV === 'dev' && 'eval',
 
   /**
    * @description 设置 ie11 不一定完美兼容，需要检查自己使用的所有依赖
@@ -109,4 +111,5 @@ export default defineConfig({
     },
   ],
   requestRecord: {},
+  reactQuery: {},
 });

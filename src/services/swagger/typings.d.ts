@@ -2,8 +2,13 @@ declare namespace API {
   type Asset = {
     id: number;
     bucket: CosBucket;
-    cosUrl: string;
-    objectUrl: string;
+    objectUrl: {
+      webp: string;
+      original: string;
+      thumbnail_300_: string;
+      thumbnail_700_: string;
+      thumbnail_blur_: string;
+    };
     originUrl: string;
     sn: string;
     tags: string[];
@@ -80,6 +85,13 @@ declare namespace API {
     updateAt?: string;
   };
 
+  type CreateRoleDto = {
+    /** 角色名称 */
+    name: string;
+    /** 角色拥有的菜单 */
+    menus?: number[];
+  };
+
   type CreateTencentCloudAccountDto = {
     name: string;
     SecretId: string;
@@ -87,6 +99,19 @@ declare namespace API {
     AppId: string;
     id?: number;
     buckets?: CosBucket[];
+  };
+
+  type deleteMenuByIdParams = {
+    id: string;
+  };
+
+  type deletePostParams = {
+    /** post id */
+    id: number;
+  };
+
+  type deleteRoleByIdParams = {
+    id: string;
   };
 
   type editUserByIdParams = {
@@ -156,11 +181,11 @@ declare namespace API {
     id: number;
     name: string;
     path: string;
+    children: Menu[];
     parent: Menu;
     parentId: number;
     createAt: string;
     updateAt: string;
-    children: Menu[];
   };
 
   type MiniProgramControllerCode2SessionParams = {
@@ -184,6 +209,25 @@ declare namespace API {
     user: User;
     createAt: string;
     updateAt: string;
+  };
+
+  type PaginateQueryPostDto = {
+    /** 每页条数 */
+    pageSize: number;
+    /** 当前页码 */
+    current: number;
+    /** post id */
+    id: number;
+    /** 创建时间 */
+    createAt: string[];
+    /** 更新时间 */
+    updateAt: string[];
+    title: string;
+    content: string;
+    public: boolean;
+    summary: string;
+    poster: Asset;
+    createBy: User;
   };
 
   type PatchPostDto = {
@@ -221,11 +265,6 @@ declare namespace API {
     updateAt: string;
   };
 
-  type PostControllerDeletePostParams = {
-    /** post id */
-    id: number;
-  };
-
   type PostControllerUpdatePostParams = {
     /** post id */
     id: number;
@@ -240,6 +279,33 @@ declare namespace API {
     updateAt: string;
   };
 
+  type QueryAssetsDto = {
+    /** 每页条数 */
+    pageSize: number;
+    /** 当前页码 */
+    current: number;
+    createAt?: string[];
+    updateAt?: string[];
+    id: number;
+    sha1: string;
+  };
+
+  type queryMenuByIdParams = {
+    id: string;
+  };
+
+  type QueryMenusDto = {
+    /** 每页条数 */
+    pageSize: number;
+    /** 当前页码 */
+    current: number;
+    id: number;
+    name: string;
+    path: string;
+    createAt?: string[];
+    updateAt?: string[];
+  };
+
   type queryPublicPostsParams = {
     publishYear?: number;
   };
@@ -250,8 +316,40 @@ declare namespace API {
     take: string;
   };
 
+  type queryRoleByIdParams = {
+    id: string;
+  };
+
+  type QueryRolesDto = {
+    /** 每页条数 */
+    pageSize: number;
+    /** 当前页码 */
+    current: number;
+    id: number;
+    name: string;
+    createAt?: string[];
+    updateAt?: string[];
+  };
+
   type queryUserByIdParams = {
     id: string;
+  };
+
+  type QueryUsersDto = {
+    /** 每页条数 */
+    pageSize: number;
+    /** 当前页码 */
+    current: number;
+    /** User id */
+    id: number;
+    /** User email */
+    email: string;
+    nickname: string;
+    bio: string;
+    /** 创建时间 */
+    createAt?: string[];
+    /** 更新时间 */
+    updateAt?: string[];
   };
 
   type RandomControllerGetAvatarParams = {
@@ -261,7 +359,7 @@ declare namespace API {
 
   type Role = {
     id: number;
-    roleName: string;
+    name: string;
     createAt: string;
     updateAt: string;
     /** 菜单列表 */

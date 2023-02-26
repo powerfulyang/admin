@@ -36,9 +36,13 @@ export async function editUserById(
 }
 
 /** 分页查询用户列表 POST /api/user-manage/query-users */
-export async function queryUsers(options?: { [key: string]: any }) {
+export async function queryUsers(body: API.QueryUsersDto, options?: { [key: string]: any }) {
   return request<any>('/api/user-manage/query-users', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }

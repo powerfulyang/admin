@@ -1,5 +1,6 @@
-import { editUserById, queryUserById } from '@/services/swagger/userManage';
-import { ProForm, ProFormText } from '@ant-design/pro-components';
+import { queryAllMenus } from '@/services/swagger/menuManage';
+import { createRole, queryRoleById, updateRole } from '@/services/swagger/roleManage';
+import { ProForm, ProFormText, ProFormTreeSelect } from '@ant-design/pro-components';
 import { useMutation, useQuery } from '@umijs/max';
 import { Modal, Spin } from 'antd';
 import { atom, useAtom } from 'jotai';
@@ -11,38 +12,42 @@ import { useEffect } from 'react';
  * @description 用于编辑或查看时，传入主键ID
  * @description 用于新建时，传入主键ID为 0
  */
-export const EditUserModalAtom = atom<string | number | undefined>(undefined);
+export const EditRoleModalAtom = atom<string | number | undefined>(undefined);
 
 type Props = {
   onOk?: () => void;
 };
 
-export const EditUserModal: FC<Props> = ({ onOk }) => {
-  const [id, setId] = useAtom(EditUserModalAtom);
-  const [form] = ProForm.useForm<API.EditUserDto>();
+export const EditRoleModal: FC<Props> = ({ onOk }) => {
+  const [id, setId] = useAtom(EditRoleModalAtom);
+  const [form] = ProForm.useForm();
 
   const { isFetching, data: initialValues } = useQuery({
-    queryKey: ['EditUserModal', id],
+    queryKey: ['EditRoleModal', id],
     enabled: !!id,
     queryFn() {
-      return queryUserById({
+      return queryRoleById({
         id: id as string,
       });
     },
+    initialData: {} as API.Role,
   });
 
   useEffect(() => {
-    form.resetFields();
+    setTimeout(() => {
+      form.resetFields();
+    });
   }, [form, initialValues]);
 
   const mutation = useMutation({
-    async mutationFn(values: any) {
-      return editUserById(
-        {
-          id: id as string,
-        },
-        values,
-      );
+    mutationFn(values: any) {
+      if (id) {
+        return updateRole({
+          id,
+          ...values,
+        });
+      }
+      return createRole(values);
     },
     onSuccess() {
       setId(undefined);
@@ -62,7 +67,7 @@ export const EditUserModal: FC<Props> = ({ onOk }) => {
         if (isTouched) {
           Modal.confirm({
             title: '确定要关闭吗?',
-            content: '确认后，所有修改将丢失',
+            content: '尚未保存，所有修改将丢失',
             onOk() {
               setId(undefined);
             },
@@ -80,7 +85,6 @@ export const EditUserModal: FC<Props> = ({ onOk }) => {
       <Spin spinning={isFetching}>
         {!isFetching && (
           <ProForm
-            key={id}
             onFinish={async (values) => {
               await mutation.mutateAsync(values);
               return true;
@@ -89,13 +93,27 @@ export const EditUserModal: FC<Props> = ({ onOk }) => {
             submitter={false}
             form={form}
             initialValues={initialValues}
-            labelCol={{
-              span: 4,
-            }}
           >
-            <ProFormText label="email" name="email" />
-            <ProFormText label="nickname" name="nickname" />
-            <ProFormText label="bio" name="bio" />
+            <ProFormText label="name" name="name" />
+            <ProFormTreeSelect
+              label="menus"
+              name="menus"
+              request={queryAllMenus}
+              fieldProps={{
+                fieldNames: {
+                  label: 'name',
+                  value: 'id',
+                },
+                treeCheckable: true,
+                multiple: true,
+                treeDefaultExpandAll: true,
+                showCheckedStrategy: 'SHOW_ALL',
+                treeCheckStrictly: true,
+              }}
+              normalize={(value) => {
+                return value?.map((item: any) => item.value);
+              }}
+            />
           </ProForm>
         )}
       </Spin>

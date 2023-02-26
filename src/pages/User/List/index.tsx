@@ -6,6 +6,7 @@ import { Typography } from 'antd';
 import { useAtom } from 'jotai';
 import moment from 'moment';
 import { useRef } from 'react';
+import { paginateTableRequest } from '@/utils/paginateTableRequest';
 
 const UserList = () => {
   const [, setId] = useAtom(EditUserModalAtom);
@@ -59,7 +60,7 @@ const UserList = () => {
       },
     },
     {
-      title: 'option',
+      title: 'Action',
       valueType: 'option',
       fixed: 'right',
       width: 'auto',
@@ -87,16 +88,7 @@ const UserList = () => {
         scroll={{
           x: 'max-content',
         }}
-        request={async (params) => {
-          const res = await queryUsers({
-            data: params,
-          });
-          return {
-            data: res[0],
-            success: true,
-            total: res[1],
-          };
-        }}
+        request={paginateTableRequest(queryUsers)}
       />
       <EditUserModal
         onOk={() => {

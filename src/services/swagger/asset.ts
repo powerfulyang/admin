@@ -2,10 +2,20 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 此处后端没有提供注释 DELETE /api/asset */
-export async function AssetControllerDeleteAsset(options?: { [key: string]: any }) {
+/** 删除资源 DELETE /api/asset */
+export async function deleteAsset(
+  body: {
+    id?: number;
+    ids?: number[];
+  },
+  options?: { [key: string]: any },
+) {
   return request<any>('/api/asset', {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }
@@ -44,6 +54,18 @@ export async function AssetControllerSaveAssetToBucket(
 export async function AssetControllerPHashMap(options?: { [key: string]: any }) {
   return request<Record<string, any>>('/api/asset/pHash/distance', {
     method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 获取所有资源 POST /api/asset/query-assets */
+export async function queryAssets(body: API.QueryAssetsDto, options?: { [key: string]: any }) {
+  return request<any>('/api/asset/query-assets', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }

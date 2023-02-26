@@ -9,8 +9,7 @@ import {
 } from '@ant-design/icons';
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { useMutation } from '@tanstack/react-query';
-import { history, useModel } from '@umijs/max';
+import { history, useModel, useMutation } from '@umijs/max';
 import { Form, message } from 'antd';
 import React, { useEffect } from 'react';
 import { flushSync } from 'react-dom';
