@@ -1,15 +1,16 @@
 import { EditRoleModal, EditRoleModalAtom } from '@/pages/System/Role/EditRoleModal';
-import { queryRoles } from '@/services/swagger/roleManage';
+import { deleteRoleById, queryRoles } from '@/services/swagger/roleManage';
 import type { ProColumnDetectType } from '@/types/ProColumnDetectType';
 import { paginateTableRequest } from '@/utils/paginateTableRequest';
 import type { ActionType } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
-import { Button, Divider, Space, Typography } from 'antd';
+import { Button, Divider, Modal, Space, Typography } from 'antd';
 import { useAtom } from 'jotai';
 import moment from 'moment';
 import { useRef } from 'react';
 
 const Index = () => {
+  const actionRef = useRef<ActionType>();
   const [, setId] = useAtom(EditRoleModalAtom);
   const columns: ProColumnDetectType<API.Role>[] = [
     {
@@ -51,14 +52,28 @@ const Index = () => {
               Edit
             </Typography.Link>
             <Divider type="vertical" />
-            <Typography.Link type="danger">Delete</Typography.Link>
+            <Typography.Link
+              type="danger"
+              onClick={() => {
+                Modal.confirm({
+                  title: 'Delete Role',
+                  content: 'Are you sure to delete this role?',
+                  onOk: async () => {
+                    await deleteRoleById({
+                      id: __.id,
+                    });
+                    actionRef.current?.reload();
+                  },
+                });
+              }}
+            >
+              Delete
+            </Typography.Link>
           </Space>
         );
       },
     },
   ];
-
-  const actionRef = useRef<ActionType>();
 
   return (
     <PageContainer title={false}>

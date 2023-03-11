@@ -58,14 +58,17 @@ export async function AssetControllerPHashMap(options?: { [key: string]: any }) 
   });
 }
 
-/** 获取所有资源 POST /api/asset/query-assets */
-export async function queryAssets(body: API.QueryAssetsDto, options?: { [key: string]: any }) {
+/** 分页查询资源 GET /api/asset/query-assets */
+export async function queryAssets(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.queryAssetsParams,
+  options?: { [key: string]: any },
+) {
   return request<any>('/api/asset/query-assets', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+    method: 'GET',
+    params: {
+      ...params,
     },
-    data: body,
     ...(options || {}),
   });
 }

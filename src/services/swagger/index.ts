@@ -15,6 +15,7 @@ import * as postManage from './postManage';
 import * as publicApi from './publicApi';
 import * as random from './random';
 import * as feed from './feed';
+import * as feedManage from './feedManage';
 import * as schedule from './schedule';
 import * as logsViewer from './logsViewer';
 import * as miniProgram from './miniProgram';
@@ -32,6 +33,7 @@ export default {
   publicApi,
   random,
   feed,
+  feedManage,
   schedule,
   logsViewer,
   miniProgram,

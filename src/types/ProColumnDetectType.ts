@@ -32,7 +32,7 @@ type Prev = [
   ...0[],
 ];
 
-export type Paths<T, D extends number = 5> = [D] extends [never]
+export type Paths<T, D extends number = 3> = [D] extends [never]
   ? never
   : T extends object
   ? {
@@ -42,12 +42,6 @@ export type Paths<T, D extends number = 5> = [D] extends [never]
     }[keyof T]
   : [];
 
-export type Leaves<T, D extends number = 5> = [D] extends [never]
-  ? never
-  : T extends object
-  ? { [K in keyof T]-?: Cons<K, Leaves<T[K], Prev[D]>> }[keyof T]
-  : [];
-
-export type ProColumnDetectType<T> = ProColumns<T> & {
-  dataIndex?: Paths<T> | keyof T | ProColumns<T>['dataIndex'];
+export type ProColumnDetectType<T> = Omit<ProColumns<T>, 'dataIndex'> & {
+  dataIndex?: Paths<T> | keyof T;
 };

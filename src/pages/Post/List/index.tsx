@@ -2,11 +2,11 @@ import type { ActionType } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import type { ProColumnDetectType } from '@/types/ProColumnDetectType';
 import { paginateTableRequest } from '@/utils/paginateTableRequest';
-import { queryPost } from '@/services/swagger/postManage';
 import moment from 'moment';
 import { Image, Modal, Tag, Typography } from 'antd';
 import { useRef } from 'react';
 import { deletePost } from '@/services/swagger/post';
+import { queryPosts } from '@/services/swagger/postManage';
 
 const Index = () => {
   const actionRef = useRef<ActionType>();
@@ -123,7 +123,7 @@ const Index = () => {
         headerTitle="Post List"
         columns={columns}
         scroll={{ x: 'max-content' }}
-        request={paginateTableRequest(queryPost)}
+        request={paginateTableRequest(queryPosts)}
       />
     </PageContainer>
   );

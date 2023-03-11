@@ -101,6 +101,10 @@ declare namespace API {
     buckets?: CosBucket[];
   };
 
+  type deleteFeedByIdParams = {
+    id: number;
+  };
+
   type deleteMenuByIdParams = {
     id: string;
   };
@@ -111,7 +115,7 @@ declare namespace API {
   };
 
   type deleteRoleByIdParams = {
-    id: string;
+    id: number;
   };
 
   type editUserByIdParams = {
@@ -211,25 +215,6 @@ declare namespace API {
     updateAt: string;
   };
 
-  type PaginateQueryPostDto = {
-    /** 每页条数 */
-    pageSize: number;
-    /** 当前页码 */
-    current: number;
-    /** post id */
-    id: number;
-    /** 创建时间 */
-    createAt: string[];
-    /** 更新时间 */
-    updateAt: string[];
-    title: string;
-    content: string;
-    public: boolean;
-    summary: string;
-    poster: Asset;
-    createBy: User;
-  };
-
   type PatchPostDto = {
     /** post id */
     id?: number;
@@ -279,7 +264,7 @@ declare namespace API {
     updateAt: string;
   };
 
-  type QueryAssetsDto = {
+  type queryAssetsParams = {
     /** 每页条数 */
     pageSize: number;
     /** 当前页码 */
@@ -288,13 +273,23 @@ declare namespace API {
     updateAt?: string[];
     id: number;
     sha1: string;
+    originUrl: string;
+  };
+
+  type queryFeedsParams = {
+    /** 每页条数 */
+    pageSize: number;
+    /** 当前页码 */
+    current: number;
+    /** timeline item id */
+    id: number;
   };
 
   type queryMenuByIdParams = {
     id: string;
   };
 
-  type QueryMenusDto = {
+  type queryMenusParams = {
     /** 每页条数 */
     pageSize: number;
     /** 当前页码 */
@@ -304,6 +299,58 @@ declare namespace API {
     path: string;
     createAt?: string[];
     updateAt?: string[];
+  };
+
+  type queryPostsParams = {
+    /** 每页条数 */
+    pageSize: number;
+    /** 当前页码 */
+    current: number;
+    /** post id */
+    id: number;
+    /** 创建时间 */
+    createAt: string[];
+    /** 更新时间 */
+    updateAt: string[];
+    title: string;
+    content: string;
+    public: boolean;
+    summary: string;
+    id: number;
+    bucket: CosBucket;
+    objectUrl: Record<string, any>;
+    originUrl: string;
+    sn: string;
+    tags: string[];
+    comment: string;
+    /** 需要注意，这里的值是不带 `.` 的 */
+    fileSuffix: string;
+    sha1: string;
+    pHash: string;
+    exif: Record<string, any>;
+    metadata: Record<string, any>;
+    size: Record<string, any>;
+    uploadBy: User;
+    createAt: string;
+    updateAt: string;
+    /** User id */
+    id: number;
+    /** User email */
+    email: string;
+    nickname: string;
+    bio: string;
+    avatar?: string;
+    lastIp: string;
+    lastAddress: string;
+    createAt: string;
+    updateAt: string;
+    timelineBackground: Asset;
+    /** User roles */
+    roles: Role[];
+    families: Family[];
+    oauthOpenidArr: OauthOpenid[];
+    saltedPassword: string;
+    salt: string;
   };
 
   type queryPublicPostsParams = {
@@ -320,7 +367,7 @@ declare namespace API {
     id: string;
   };
 
-  type QueryRolesDto = {
+  type queryRolesParams = {
     /** 每页条数 */
     pageSize: number;
     /** 当前页码 */
@@ -335,7 +382,7 @@ declare namespace API {
     id: string;
   };
 
-  type QueryUsersDto = {
+  type queryUsersParams = {
     /** 每页条数 */
     pageSize: number;
     /** 当前页码 */
@@ -364,6 +411,8 @@ declare namespace API {
     updateAt: string;
     /** 菜单列表 */
     menus: Menu[];
+    /** 权限列表 */
+    permissions: string[];
   };
 
   type triggerScheduleParams = {

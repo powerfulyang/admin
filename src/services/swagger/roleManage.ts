@@ -54,14 +54,25 @@ export async function deleteRoleById(
   });
 }
 
-/** 查询角色列表 POST /api/role-manage/query-roles */
-export async function queryRoles(body: API.QueryRolesDto, options?: { [key: string]: any }) {
+/** 获取用户权限 GET /api/role-manage/permissions */
+export async function listPermissions(options?: { [key: string]: any }) {
+  return request<Record<string, any>[]>('/api/role-manage/permissions', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 分页查询角色 GET /api/role-manage/query-roles */
+export async function queryRoles(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.queryRolesParams,
+  options?: { [key: string]: any },
+) {
   return request<any>('/api/role-manage/query-roles', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+    method: 'GET',
+    params: {
+      ...params,
     },
-    data: body,
     ...(options || {}),
   });
 }

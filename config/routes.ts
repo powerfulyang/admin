@@ -74,6 +74,16 @@ export default [
         ],
       },
       {
+        path: '/feed',
+        access: 'canAdmin',
+        routes: [
+          {
+            path: '/feed/list',
+            component: './Feed/List',
+          },
+        ],
+      },
+      {
         path: '*',
         component: './404',
       },

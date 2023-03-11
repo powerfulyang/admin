@@ -1,6 +1,16 @@
 import { queryAllMenus } from '@/services/swagger/menuManage';
-import { createRole, queryRoleById, updateRole } from '@/services/swagger/roleManage';
-import { ProForm, ProFormText, ProFormTreeSelect } from '@ant-design/pro-components';
+import {
+  createRole,
+  listPermissions,
+  queryRoleById,
+  updateRole,
+} from '@/services/swagger/roleManage';
+import {
+  ProForm,
+  ProFormCheckbox,
+  ProFormText,
+  ProFormTreeSelect,
+} from '@ant-design/pro-components';
 import { useMutation, useQuery } from '@umijs/max';
 import { Modal, Spin } from 'antd';
 import { atom, useAtom } from 'jotai';
@@ -113,6 +123,11 @@ export const EditRoleModal: FC<Props> = ({ onOk }) => {
               normalize={(value) => {
                 return value?.map((item: any) => item.value);
               }}
+            />
+            <ProFormCheckbox.Group
+              label="permissions"
+              name="permissions"
+              request={listPermissions}
             />
           </ProForm>
         )}
