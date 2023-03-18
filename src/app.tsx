@@ -1,14 +1,16 @@
+import { isChildApplicationPath } from '@/utils/isChildApplicationPath';
 import type { RunTimeLayoutConfig } from '@@/plugin-layout/types';
 import { LinkOutlined, TeamOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { PageLoading } from '@ant-design/pro-components';
 import { history, Link } from '@umijs/max';
 import { Button, Modal, Result } from 'antd';
+import type { BreadcrumbItemType } from 'antd/lib/breadcrumb/Breadcrumb';
 import { stringify } from 'querystring';
 import type { ReactElement } from 'react';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
-import { getCurrentUser, logout, queryCurrentUserMenus } from './services/swagger/user';
+import { logout, queryCurrentUser, queryCurrentUserMenus } from './services/swagger/user';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -32,7 +34,7 @@ export async function getInitialState(): Promise<{
   avatar?: string;
 }> {
   const fetchUserInfo = () => {
-    return getCurrentUser({
+    return queryCurrentUser({
       skipErrorHandler: true,
     });
   };
@@ -58,6 +60,8 @@ const iconMap = {
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState, loading }) => {
   return {
+    ...initialState?.settings,
+    className: isChildApplicationPath() ? '_child-path' : '',
     waterMarkProps: {
       content: initialState?.currentUser?.nickname,
     },
@@ -74,7 +78,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState, loa
       const { location } = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
+        goLogin();
       }
     },
     links: isDev
@@ -108,7 +112,26 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState, loa
       await setInitialState((s) => ({ ...s, currentUser: undefined }));
       goLogin();
     },
-    ...initialState?.settings,
+    breadcrumbRender: ((routers: BreadcrumbItemType[]) => {
+      return [
+        {
+          title: 'Home',
+        },
+        ...routers.map((item: BreadcrumbItemType) => {
+          return {
+            title: item.title,
+          };
+        }),
+      ];
+    }) as any,
+    breadcrumbProps: {
+      itemRender: (route: BreadcrumbItemType) => {
+        if (route.title === 'Home') {
+          return <Link to="/">Home</Link>;
+        }
+        return route.title;
+      },
+    } as any,
   };
 };
 
@@ -126,10 +149,12 @@ export const rootContainer = (element: ReactElement) => {
 };
 
 export const reactQuery = {
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      cacheTime: 0,
+  queryClient: {
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        cacheTime: 0,
+      },
     },
   },
 };

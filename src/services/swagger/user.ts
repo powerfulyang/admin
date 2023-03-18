@@ -3,7 +3,7 @@
 import { request } from '@umijs/max';
 
 /** 获取当前登录用户信息 GET /api/user/current */
-export async function getCurrentUser(options?: { [key: string]: any }) {
+export async function queryCurrentUser(options?: { [key: string]: any }) {
   return request<API.User>('/api/user/current', {
     method: 'GET',
     ...(options || {}),

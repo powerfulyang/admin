@@ -19,14 +19,16 @@ declare namespace API {
     pHash: string;
     exif: Record<string, any>;
     metadata: Record<string, any>;
-    size: Record<string, any>;
+    size: { width: number; height: number };
     uploadBy: User;
-    createAt: string;
-    updateAt: string;
+    createdAt: string;
+    updatedAt: string;
   };
 
-  type AssetControllerSaveAssetToBucketParams = {
-    bucketName: string;
+  type ChatGPTPayload = {
+    message: string;
+    parentMessageId?: string;
+    conversationId?: string;
   };
 
   type CosBucket = {
@@ -38,8 +40,8 @@ declare namespace API {
     ACL: Record<string, any>;
     CORSRules: Record<string, any>[];
     RefererConfiguration: Record<string, any>;
-    createAt: string;
-    updateAt: string;
+    createdAt: string;
+    updatedAt: string;
     tencentCloudAccount: Record<string, any>;
     assets: Asset[];
     public: boolean;
@@ -55,8 +57,8 @@ declare namespace API {
     ACL?: Record<string, any>;
     CORSRules?: Record<string, any>[];
     RefererConfiguration?: Record<string, any>;
-    createAt?: string;
-    updateAt?: string;
+    createdAt?: string;
+    updatedAt?: string;
     assets?: Asset[];
     public?: boolean;
   };
@@ -73,21 +75,23 @@ declare namespace API {
     title: string;
     content: string;
     posterId?: number;
-    createBy: User;
     summary?: string;
     tags?: string[];
     public?: boolean;
     publishYear?: number;
+    createBy?: User;
     updateBy?: User;
     poster?: Asset;
     logs?: PostLog[];
-    createAt?: string;
-    updateAt?: string;
+    createdAt?: string;
+    updatedAt?: string;
   };
 
   type CreateRoleDto = {
     /** 角色名称 */
     name: string;
+    /** 权限列表 */
+    permissions: string[];
     /** 角色拥有的菜单 */
     menus?: number[];
   };
@@ -110,7 +114,6 @@ declare namespace API {
   };
 
   type deletePostParams = {
-    /** post id */
     id: number;
   };
 
@@ -134,8 +137,8 @@ declare namespace API {
     id: number;
     name: string;
     description: string;
-    createAt: string;
-    updateAt: string;
+    createdAt: string;
+    updatedAt: string;
     members: User[];
   };
 
@@ -149,8 +152,8 @@ declare namespace API {
     public: boolean;
     createBy: User;
     updateBy: User;
-    createAt: string;
-    updateAt: string;
+    createdAt: string;
+    updatedAt: string;
   };
 
   type FeedControllerRemoveParams = {
@@ -158,23 +161,25 @@ declare namespace API {
     id: number;
   };
 
-  type getPublicAssetByIdParams = {
-    id: string;
-  };
-
-  type getPublicPostByIdParams = {
-    id: number;
-    versions: string[];
-  };
-
   type GithubControllerGetUserInfoParams = {
     login: string;
   };
 
   type infiniteQueryPublicAssetParams = {
-    prevCursor: string;
-    nextCursor: string;
-    take: string;
+    prevCursor?: string;
+    nextCursor?: string;
+    take?: number;
+  };
+
+  type infiniteQueryPublicTimelineParams = {
+    prevCursor?: string;
+    nextCursor?: string;
+    take?: number;
+  };
+
+  type InfiniteQueryResponse = {
+    prevCursor?: number;
+    nextCursor?: number;
   };
 
   type LogsViewerControllerListLogsParams = {
@@ -188,8 +193,8 @@ declare namespace API {
     children: Menu[];
     parent: Menu;
     parentId: number;
-    createAt: string;
-    updateAt: string;
+    createdAt: string;
+    updatedAt: string;
   };
 
   type MiniProgramControllerCode2SessionParams = {
@@ -202,8 +207,8 @@ declare namespace API {
     clientId: string;
     clientSecret: string;
     callbackUrl: string;
-    createAt: string;
-    updateAt: string;
+    createdAt: string;
+    updatedAt: string;
   };
 
   type OauthOpenid = {
@@ -211,30 +216,27 @@ declare namespace API {
     application: OauthApplication;
     openid: string;
     user: User;
-    createAt: string;
-    updateAt: string;
+    createdAt: string;
+    updatedAt: string;
   };
 
   type PatchPostDto = {
-    /** post id */
-    id?: number;
     title: string;
     content: string;
     posterId?: number;
-    updateBy: User;
     summary?: string;
     tags?: string[];
     public?: boolean;
     publishYear?: number;
     createBy?: User;
+    updateBy?: User;
     poster?: Asset;
     logs?: PostLog[];
-    createAt?: string;
-    updateAt?: string;
+    createdAt?: string;
+    updatedAt?: string;
   };
 
   type Post = {
-    /** post id */
     id: number;
     title: string;
     content: string;
@@ -246,13 +248,8 @@ declare namespace API {
     updateBy: User;
     poster: Asset;
     logs: PostLog[];
-    createAt: string;
-    updateAt: string;
-  };
-
-  type PostControllerUpdatePostParams = {
-    /** post id */
-    id: number;
+    createdAt: string;
+    updatedAt: string;
   };
 
   type PostLog = {
@@ -260,8 +257,23 @@ declare namespace API {
     post: Post;
     title: string;
     content: string;
-    createAt: string;
-    updateAt: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+
+  type PushSubscriptionJSON = {
+    endpoint?: string;
+    expirationTime?: number;
+    keys?: Record<string, any>;
+  };
+
+  type PushSubscriptionLog = {
+    id: number;
+    pushSubscriptionJSON: Record<string, any>;
+    endpoint: string;
+    user?: User;
+    createdAt: string;
+    updatedAt: string;
   };
 
   type queryAssetsParams = {
@@ -269,8 +281,8 @@ declare namespace API {
     pageSize: number;
     /** 当前页码 */
     current: number;
-    createAt?: string[];
-    updateAt?: string[];
+    createdAt?: string[];
+    updatedAt?: string[];
     id: number;
     sha1: string;
     originUrl: string;
@@ -297,70 +309,39 @@ declare namespace API {
     id: number;
     name: string;
     path: string;
-    createAt?: string[];
-    updateAt?: string[];
+    createdAt?: string[];
+    updatedAt?: string[];
   };
 
-  type queryPostsParams = {
+  type QueryPostsDto = {
     /** 每页条数 */
     pageSize: number;
     /** 当前页码 */
     current: number;
-    /** post id */
     id: number;
     /** 创建时间 */
-    createAt: string[];
+    createdAt: string[];
     /** 更新时间 */
-    updateAt: string[];
+    updatedAt: string[];
     title: string;
     content: string;
     public: boolean;
     summary: string;
+    poster: Asset;
+    createBy: User;
+  };
+
+  type queryPublicAssetByIdParams = {
+    id: string;
+  };
+
+  type queryPublicPostByIdParams = {
     id: number;
-    bucket: CosBucket;
-    objectUrl: Record<string, any>;
-    originUrl: string;
-    sn: string;
-    tags: string[];
-    comment: string;
-    /** 需要注意，这里的值是不带 `.` 的 */
-    fileSuffix: string;
-    sha1: string;
-    pHash: string;
-    exif: Record<string, any>;
-    metadata: Record<string, any>;
-    size: Record<string, any>;
-    uploadBy: User;
-    createAt: string;
-    updateAt: string;
-    /** User id */
-    id: number;
-    /** User email */
-    email: string;
-    nickname: string;
-    bio: string;
-    avatar?: string;
-    lastIp: string;
-    lastAddress: string;
-    createAt: string;
-    updateAt: string;
-    timelineBackground: Asset;
-    /** User roles */
-    roles: Role[];
-    families: Family[];
-    oauthOpenidArr: OauthOpenid[];
-    saltedPassword: string;
-    salt: string;
+    versions: string[];
   };
 
   type queryPublicPostsParams = {
     publishYear?: number;
-  };
-
-  type queryPublicTimelineParams = {
-    prevCursor: string;
-    nextCursor: string;
-    take: string;
   };
 
   type queryRoleByIdParams = {
@@ -374,8 +355,8 @@ declare namespace API {
     current: number;
     id: number;
     name: string;
-    createAt?: string[];
-    updateAt?: string[];
+    createdAt?: string[];
+    updatedAt?: string[];
   };
 
   type queryUserByIdParams = {
@@ -394,9 +375,9 @@ declare namespace API {
     nickname: string;
     bio: string;
     /** 创建时间 */
-    createAt?: string[];
+    createdAt?: string[];
     /** 更新时间 */
-    updateAt?: string[];
+    updatedAt?: string[];
   };
 
   type RandomControllerGetAvatarParams = {
@@ -407,12 +388,16 @@ declare namespace API {
   type Role = {
     id: number;
     name: string;
-    createAt: string;
-    updateAt: string;
+    createdAt: string;
+    updatedAt: string;
     /** 菜单列表 */
     menus: Menu[];
     /** 权限列表 */
     permissions: string[];
+  };
+
+  type saveAssetToBucketParams = {
+    bucketName: string;
   };
 
   type triggerScheduleParams = {
@@ -426,6 +411,10 @@ declare namespace API {
     id: number;
     public: boolean;
     updateBy: User;
+  };
+
+  type updatePostParams = {
+    id: number;
   };
 
   type UploadAssetsDto = {
@@ -442,8 +431,8 @@ declare namespace API {
     avatar?: string;
     lastIp: string;
     lastAddress: string;
-    createAt: string;
-    updateAt: string;
+    createdAt: string;
+    updatedAt: string;
     timelineBackground: Asset;
     /** User roles */
     roles: Role[];
@@ -461,7 +450,7 @@ declare namespace API {
   };
 
   type ViewCountDto = {
-    createAt: string;
+    createdAt: string;
     requestCount: number;
     distinctIpCount: number;
   };

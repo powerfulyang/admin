@@ -6,6 +6,16 @@ import routes from './routes';
 
 const { REACT_APP_ENV } = process.env;
 
+let swaggerUrl = 'https://local.powerfulyang.com/api/swagger-json';
+
+if (REACT_APP_ENV === 'qa') {
+  swaggerUrl = 'https://qa.powerfulyang.com/api/swagger-json';
+}
+
+if (REACT_APP_ENV === 'prod') {
+  swaggerUrl = 'https://powerfulyang.com/api/swagger-json';
+}
+
 export default defineConfig({
   /**
    * @description 让 build 之后的产物包含 hash 后缀。通常用于增量发布和避免浏览器加载缓存。
@@ -13,7 +23,7 @@ export default defineConfig({
    */
   hash: true,
   npmClient: 'pnpm',
-  devtool: REACT_APP_ENV === 'dev' && 'eval',
+  devtool: REACT_APP_ENV === 'dev' && 'source-map',
 
   /**
    * @description 设置 ie11 不一定完美兼容，需要检查自己使用的所有依赖
@@ -105,11 +115,13 @@ export default defineConfig({
   openAPI: [
     {
       requestLibPath: "import { request } from '@umijs/max'",
-      schemaPath: 'https://local.powerfulyang.com/api/swagger-json',
+      schemaPath: swaggerUrl,
       mock: false,
       projectName: 'swagger',
     },
   ],
   requestRecord: {},
-  reactQuery: {},
+  reactQuery: {
+    devtool: false,
+  },
 });

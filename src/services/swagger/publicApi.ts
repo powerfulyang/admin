@@ -8,7 +8,7 @@ export async function infiniteQueryPublicAsset(
   params: API.infiniteQueryPublicAssetParams,
   options?: { [key: string]: any },
 ) {
-  return request<any>('/api/public/asset', {
+  return request<API.InfiniteQueryResponse & { resources?: API.Asset[] }>('/api/public/asset', {
     method: 'GET',
     params: {
       ...params,
@@ -18,9 +18,9 @@ export async function infiniteQueryPublicAsset(
 }
 
 /** 获取单个公开的图片资源 GET /api/public/asset/${param0} */
-export async function getPublicAssetById(
+export async function queryPublicAssetById(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getPublicAssetByIdParams,
+  params: API.queryPublicAssetByIdParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
@@ -31,29 +31,25 @@ export async function getPublicAssetById(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/public/bing-ai/chat */
-export async function PublicControllerChatWithBingAI(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/public/bing-ai/chat', {
+/** 与chat gpt聊天 POST /api/public/chat-gpt/chat */
+export async function chatWithChatGPT(body: API.ChatGPTPayload, options?: { [key: string]: any }) {
+  return request<API.ChatGPTPayload>('/api/public/chat-gpt/chat', {
     method: 'POST',
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 POST /api/public/chat-gpt/chat */
-export async function PublicControllerChatWithChatGPT(options?: { [key: string]: any }) {
-  return request<any>('/api/public/chat-gpt/chat', {
-    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }
 
 /** 获取所有的公开时间线 GET /api/public/feed */
-export async function queryPublicTimeline(
+export async function infiniteQueryPublicTimeline(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.queryPublicTimelineParams,
+  params: API.infiniteQueryPublicTimelineParams,
   options?: { [key: string]: any },
 ) {
-  return request<any>('/api/public/feed', {
+  return request<API.InfiniteQueryResponse & { resources?: API.Feed[] }>('/api/public/feed', {
     method: 'GET',
     params: {
       ...params,
@@ -86,9 +82,9 @@ export async function queryPublicPosts(
 }
 
 /** 获取单个文章详细信息 GET /api/public/post/${param0} */
-export async function getPublicPostById(
+export async function queryPublicPostById(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getPublicPostByIdParams,
+  params: API.queryPublicPostByIdParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;

@@ -42,6 +42,9 @@ export type Paths<T, D extends number = 3> = [D] extends [never]
     }[keyof T]
   : [];
 
-export type ProColumnDetectType<T> = Omit<ProColumns<T>, 'dataIndex'> & {
+export type ProStrictColumns<T, ValueType = 'text'> = Omit<
+  ProColumns<T, ValueType>,
+  'dataIndex'
+> & {
   dataIndex?: Paths<T> | keyof T;
 };

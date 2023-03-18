@@ -2,11 +2,8 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 此处后端没有提供注释 POST /api/post */
-export async function PostControllerCreatePost(
-  body: API.CreatePostDto,
-  options?: { [key: string]: any },
-) {
+/** 创建文章 POST /api/post */
+export async function createPost(body: API.CreatePostDto, options?: { [key: string]: any }) {
   return request<API.Post>('/api/post', {
     method: 'POST',
     headers: {
@@ -31,10 +28,10 @@ export async function deletePost(
   });
 }
 
-/** 此处后端没有提供注释 PATCH /api/post/${param0} */
-export async function PostControllerUpdatePost(
+/** 更新文章 PATCH /api/post/${param0} */
+export async function updatePost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.PostControllerUpdatePostParams,
+  params: API.updatePostParams,
   body: API.PatchPostDto,
   options?: { [key: string]: any },
 ) {

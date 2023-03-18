@@ -40,7 +40,7 @@ export async function createFeed(body: API.CreateFeedDto, options?: { [key: stri
     }
   });
 
-  return request<Record<string, any>>('/api/feed', {
+  return request<API.Feed>('/api/feed', {
     method: 'POST',
     data: formData,
     requestType: 'form',

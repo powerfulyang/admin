@@ -20,10 +20,10 @@ export async function deleteAsset(
   });
 }
 
-/** 此处后端没有提供注释 POST /api/asset/${param0} */
-export async function AssetControllerSaveAssetToBucket(
+/** 上传资源 POST /api/asset/${param0} */
+export async function saveAssetToBucket(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.AssetControllerSaveAssetToBucketParams,
+  params: API.saveAssetToBucketParams,
   body: API.UploadAssetsDto,
   options?: { [key: string]: any },
 ) {

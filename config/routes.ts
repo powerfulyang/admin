@@ -40,18 +40,8 @@ export default [
         ],
       },
       {
-        path: '/system',
-        access: 'canAdmin',
-        routes: [
-          {
-            path: '/system/role',
-            component: './System/Role',
-          },
-          {
-            path: '/system/menu',
-            component: './System/Menu',
-          },
-        ],
+        path: '/system/*',
+        component: './System',
       },
       {
         path: '/asset',
@@ -60,6 +50,10 @@ export default [
           {
             path: '/asset/list',
             component: './Asset/List',
+          },
+          {
+            path: '/asset/similar-check',
+            component: './Asset/SimilarCheck',
           },
         ],
       },

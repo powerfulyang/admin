@@ -1,15 +1,15 @@
-import type { ProColumnDetectType } from '@/types/ProColumnDetectType';
+import { deleteFeedById, queryFeeds } from '@/services/swagger/feedManage';
+import type { ProStrictColumns } from '@/types/ProStrictColumns';
+import { paginateTableRequest } from '@/utils/tableRequest';
 import type { ActionType } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
-import { paginateTableRequest } from '@/utils/paginateTableRequest';
-import { deleteFeedById, queryFeeds } from '@/services/swagger/feedManage';
-import moment from 'moment';
 import { Modal, Typography } from 'antd';
+import dayjs from 'dayjs';
 import { useRef } from 'react';
 
 const Index = () => {
   const actionRef = useRef<ActionType>();
-  const columns: ProColumnDetectType<API.Feed>[] = [
+  const columns: ProStrictColumns<API.Feed>[] = [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -24,18 +24,18 @@ const Index = () => {
     },
     {
       title: 'creatAt',
-      dataIndex: 'createAt',
+      dataIndex: 'createdAt',
       valueType: 'dateTimeRange',
       render: (text, record) => {
-        return moment(record.createAt).format('YYYY-MM-DD HH:mm:ss');
+        return dayjs(record.createdAt).format('YYYY-MM-DD HH:mm:ss');
       },
     },
     {
-      title: 'updateAt',
-      dataIndex: 'updateAt',
+      title: 'updatedAt',
+      dataIndex: 'updatedAt',
       valueType: 'dateTimeRange',
       render: (text, record) => {
-        return moment(record.updateAt).format('YYYY-MM-DD HH:mm:ss');
+        return dayjs(record.updatedAt).format('YYYY-MM-DD HH:mm:ss');
       },
     },
     {

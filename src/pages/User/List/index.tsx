@@ -1,15 +1,14 @@
 import { EditUserModal, EditUserModalAtom } from '@/pages/User/List/EditUserModal';
 import { queryUsers } from '@/services/swagger/userManage';
+import { paginateTableRequest } from '@/utils/tableRequest';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Typography } from 'antd';
-import { useAtom } from 'jotai';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import { getDefaultStore } from 'jotai';
 import { useRef } from 'react';
-import { paginateTableRequest } from '@/utils/paginateTableRequest';
 
 const UserList = () => {
-  const [, setId] = useAtom(EditUserModalAtom);
   const columns: ProColumns<API.User>[] = [
     {
       title: 'ID',
@@ -44,19 +43,19 @@ const UserList = () => {
       hideInSearch: true,
     },
     {
-      title: 'createAt',
-      dataIndex: 'createAt',
+      title: 'createdAt',
+      dataIndex: 'createdAt',
       valueType: 'dateRange',
       render(_, __) {
-        return moment(__.createAt).format('YYYY-MM-DD HH:mm:ss');
+        return dayjs(__.createdAt).format('YYYY-MM-DD HH:mm:ss');
       },
     },
     {
-      title: 'updateAt',
-      dataIndex: 'updateAt',
+      title: 'updatedAt',
+      dataIndex: 'updatedAt',
       valueType: 'dateRange',
       render(_, __) {
-        return moment(__.updateAt).format('YYYY-MM-DD HH:mm:ss');
+        return dayjs(__.updatedAt).format('YYYY-MM-DD HH:mm:ss');
       },
     },
     {
@@ -68,7 +67,7 @@ const UserList = () => {
         <Typography.Link
           key="editable"
           onClick={() => {
-            setId(record.id);
+            getDefaultStore().set(EditUserModalAtom, String(record.id));
           }}
         >
           Edit

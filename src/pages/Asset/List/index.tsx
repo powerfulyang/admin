@@ -1,12 +1,12 @@
-import { PageContainer, ProTable } from '@ant-design/pro-components';
-import type { ProColumnDetectType } from '@/types/ProColumnDetectType';
-import { paginateTableRequest } from '@/utils/paginateTableRequest';
 import { deleteAsset, queryAssets } from '@/services/swagger/asset';
-import moment from 'moment';
+import type { ProStrictColumns } from '@/types/ProStrictColumns';
+import { paginateTableRequest } from '@/utils/tableRequest';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Image, Modal, Typography } from 'antd';
+import dayjs from 'dayjs';
 
 const Index = () => {
-  const columns: ProColumnDetectType<API.Asset>[] = [
+  const columns: ProStrictColumns<API.Asset>[] = [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -41,19 +41,19 @@ const Index = () => {
       renderText: (text) => text.join(','),
     },
     {
-      title: 'createAt',
-      dataIndex: 'createAt',
+      title: 'createdAt',
+      dataIndex: 'createdAt',
       valueType: 'dateRange',
       render(_, __) {
-        return moment(__.createAt).format('YYYY-MM-DD HH:mm:ss');
+        return dayjs(__.createdAt).format('YYYY-MM-DD HH:mm:ss');
       },
     },
     {
-      title: 'updateAt',
-      dataIndex: 'updateAt',
+      title: 'updatedAt',
+      dataIndex: 'updatedAt',
       valueType: 'dateRange',
       render(_, __) {
-        return moment(__.updateAt).format('YYYY-MM-DD HH:mm:ss');
+        return dayjs(__.updatedAt).format('YYYY-MM-DD HH:mm:ss');
       },
     },
     {

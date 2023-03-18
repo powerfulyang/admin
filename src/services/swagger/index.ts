@@ -19,6 +19,8 @@ import * as feedManage from './feedManage';
 import * as schedule from './schedule';
 import * as logsViewer from './logsViewer';
 import * as miniProgram from './miniProgram';
+import * as FcmControllerSubscribe from './FcmControllerSubscribe';
+import * as webPush from './webPush';
 export default {
   user,
   menuManage,
@@ -37,4 +39,6 @@ export default {
   schedule,
   logsViewer,
   miniProgram,
+  FcmControllerSubscribe,
+  webPush,
 };

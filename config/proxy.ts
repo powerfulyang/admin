@@ -17,9 +17,6 @@ export default {
       cookieDomainRewrite: { 'powerfulyang.com': 'localhost' },
     },
   },
-  /**
-   * @doc https://github.com/chimurai/http-proxy-middleware
-   */
   qa: {
     '/api/': {
       target: 'https://qa.powerfulyang.com',
