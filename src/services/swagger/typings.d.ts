@@ -201,6 +201,14 @@ declare namespace API {
     code: string;
   };
 
+  type NotificationDto = {
+    title: string;
+    message: string;
+    icon?: string;
+    openUrl?: string;
+    subscribeId: number;
+  };
+
   type OauthApplication = {
     id: number;
     platformName: 'google' | 'github' | 'test';
@@ -220,7 +228,15 @@ declare namespace API {
     updatedAt: string;
   };
 
+  type PaginatedBaseQuery = {
+    /** 每页条数 */
+    pageSize: number;
+    /** 当前页码 */
+    current: number;
+  };
+
   type PatchPostDto = {
+    id: number;
     title: string;
     content: string;
     posterId?: number;
@@ -269,7 +285,7 @@ declare namespace API {
 
   type PushSubscriptionLog = {
     id: number;
-    pushSubscriptionJSON: Record<string, any>;
+    pushSubscriptionJSON: PushSubscriptionJSON;
     endpoint: string;
     user?: User;
     createdAt: string;
@@ -345,7 +361,7 @@ declare namespace API {
   };
 
   type queryRoleByIdParams = {
-    id: string;
+    id: number;
   };
 
   type queryRolesParams = {
@@ -411,10 +427,6 @@ declare namespace API {
     id: number;
     public: boolean;
     updateBy: User;
-  };
-
-  type updatePostParams = {
-    id: number;
   };
 
   type UploadAssetsDto = {

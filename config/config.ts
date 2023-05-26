@@ -1,5 +1,6 @@
 // https://umijs.org/config/
 import { defineConfig } from '@umijs/max';
+import tailwindcss from 'tailwindcss';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
@@ -124,4 +125,5 @@ export default defineConfig({
   reactQuery: {
     devtool: false,
   },
+  extraPostCSSPlugins: [tailwindcss()],
 });

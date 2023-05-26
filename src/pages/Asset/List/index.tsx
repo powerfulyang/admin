@@ -1,11 +1,14 @@
 import { deleteAsset, queryAssets } from '@/services/swagger/asset';
 import type { ProStrictColumns } from '@/types/ProStrictColumns';
 import { paginateTableRequest } from '@/utils/tableRequest';
+import type { ActionType } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Image, Modal, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { useRef } from 'react';
 
 const Index = () => {
+  const actionRef = useRef<ActionType>();
   const columns: ProStrictColumns<API.Asset>[] = [
     {
       title: 'ID',
@@ -71,7 +74,7 @@ const Index = () => {
                 await deleteAsset({
                   id: record.id,
                 });
-                return true;
+                actionRef.current?.reload();
               },
             });
           }}

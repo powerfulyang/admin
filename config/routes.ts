@@ -78,6 +78,16 @@ export default [
         ],
       },
       {
+        path: '/notification',
+        access: 'canAdmin',
+        routes: [
+          {
+            path: '/notification/list',
+            component: './Notification/List',
+          },
+        ],
+      },
+      {
         path: '*',
         component: './404',
       },

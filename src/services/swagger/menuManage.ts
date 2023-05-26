@@ -33,7 +33,7 @@ export async function queryMenuById(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<Record<string, any>>(`/api/menu-manage/${param0}`, {
+  return request<API.Menu>(`/api/menu-manage/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),

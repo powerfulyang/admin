@@ -14,6 +14,18 @@ export async function createPost(body: API.CreatePostDto, options?: { [key: stri
   });
 }
 
+/** 更新文章 PATCH /api/post */
+export async function updatePost(body: API.PatchPostDto, options?: { [key: string]: any }) {
+  return request<API.Post>('/api/post', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 删除文章 DELETE /api/post/${param0} */
 export async function deletePost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -24,25 +36,6 @@ export async function deletePost(
   return request<any>(`/api/post/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
-    ...(options || {}),
-  });
-}
-
-/** 更新文章 PATCH /api/post/${param0} */
-export async function updatePost(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.updatePostParams,
-  body: API.PatchPostDto,
-  options?: { [key: string]: any },
-) {
-  const { id: param0, ...queryParams } = params;
-  return request<API.Post>(`/api/post/${param0}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    params: { ...queryParams },
-    data: body,
     ...(options || {}),
   });
 }
