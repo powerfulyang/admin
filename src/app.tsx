@@ -1,13 +1,13 @@
-import { isChildApplicationPath } from '@/utils/isChildApplicationPath';
-import type { RunTimeLayoutConfig } from '@@/plugin-layout/types';
+import { stringify } from 'querystring';
 import { LinkOutlined, TeamOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { PageLoading } from '@ant-design/pro-components';
+import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
 import { Button, Modal, Result } from 'antd';
 import type { BreadcrumbItemType } from 'antd/lib/breadcrumb/Breadcrumb';
-import { stringify } from 'querystring';
 import type { ReactElement } from 'react';
+import { isChildApplicationPath } from '@/utils/isChildApplicationPath';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import { logout, queryCurrentUser, queryCurrentUserMenus } from './services/swagger/user';

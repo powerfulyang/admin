@@ -1,10 +1,10 @@
 /** @jsxRuntime classic */
-import { system } from '@/global';
 import microApp from '@micro-zoe/micro-app';
 /** @jsx jsxCustomEvent */
 import jsxCustomEvent from '@micro-zoe/micro-app/polyfill/jsx-custom-event';
 import { history, useLocation } from '@umijs/max';
 import { useEffect, useState } from 'react';
+import { system } from '@/global';
 
 // @ts-ignore
 window.jsxCustomEvent = jsxCustomEvent;

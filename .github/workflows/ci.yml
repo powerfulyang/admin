@@ -34,4 +34,4 @@ jobs:
           SOURCE: 'dist/.'
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
-          TARGET: ~/applications/www/admin.powerfulyang.com/
+          TARGET: ~/applications/www/admin/

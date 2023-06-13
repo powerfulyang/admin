@@ -31,6 +31,11 @@ const List = () => {
       valueType: 'dateTime',
     },
     {
+      title: '更新时间',
+      dataIndex: 'updatedAt',
+      valueType: 'dateTime',
+    },
+    {
       title: '操作',
       valueType: 'option',
       fixed: 'right',

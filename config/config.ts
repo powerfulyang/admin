@@ -126,4 +126,6 @@ export default defineConfig({
     devtool: false,
   },
   extraPostCSSPlugins: [tailwindcss()],
+  publicPath: '/admin/',
+  base: '/admin/',
 });

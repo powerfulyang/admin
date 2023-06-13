@@ -1,4 +1,4 @@
-﻿import type { RequestConfig, RequestOptions } from '@@/plugin-request/request';
+import type { RequestConfig, RequestOptions } from '@umijs/max';
 import { notification } from 'antd';
 
 /**

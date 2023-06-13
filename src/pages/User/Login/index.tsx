@@ -31,7 +31,9 @@ const ActionIcons = () => {
 
   const login = (app: string) => {
     const redirect = getPageQuery('redirect') || window.location.origin;
-    history.push(`https://api.powerfulyang.com/api/user/${app}/auth?redirect=${redirect}`);
+    window.location.href = `https://powerfulyang.com/api/user/${app}/auth?redirect=${encodeURIComponent(
+      redirect,
+    )}`;
   };
 
   return (

@@ -1,6 +1,6 @@
 export const isChildApplicationPath = () => {
   const { pathname } = window.location;
-  if (pathname.startsWith('/system')) {
+  if (pathname.startsWith('/admin/system')) {
     return true;
   }
   //
