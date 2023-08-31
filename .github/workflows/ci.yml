@@ -26,6 +26,15 @@ jobs:
           cache-dependency-path: 'pnpm-lock.yaml'
       - run: pnpm install
       - run: pnpm run build
+      - name: check dir exists
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script_stop: true
+          script: |
+            mkdir -p ~/applications/www/admin/
       - name: Deploy
         uses: easingthemes/ssh-deploy@v3.0.1
         env:
