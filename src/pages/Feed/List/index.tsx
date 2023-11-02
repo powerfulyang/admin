@@ -1,11 +1,11 @@
-import { deleteFeedById, queryFeeds } from '@/services/swagger/feedManage';
-import type { ProStrictColumns } from '@/types/ProStrictColumns';
-import { paginateTableRequest } from '@/utils/tableRequest';
 import type { ActionType } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Modal, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useRef } from 'react';
+import { paginateTableRequest } from '@/utils/tableRequest';
+import type { ProStrictColumns } from '@/types/ProStrictColumns';
+import { deleteFeedById, queryFeeds } from '@/services/swagger/feedManage';
 
 const Index = () => {
   const actionRef = useRef<ActionType>();
@@ -41,6 +41,8 @@ const Index = () => {
     {
       title: 'Action',
       valueType: 'option',
+      fixed: 'right',
+      width: 'auto',
       render: (text, record) => {
         return (
           <Typography.Link

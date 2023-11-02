@@ -27,7 +27,7 @@ export default {
   },
   prod: {
     '/api/': {
-      target: 'https://powerfulyang.com',
+      target: 'https://api.powerfulyang.com',
       changeOrigin: true,
       pathRewrite: { '^': '' },
       cookieDomainRewrite: { 'powerfulyang.com': 'localhost' },

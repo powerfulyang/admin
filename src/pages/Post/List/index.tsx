@@ -1,12 +1,12 @@
-import { deletePost } from '@/services/swagger/post';
-import { queryPosts } from '@/services/swagger/postManage';
-import type { ProStrictColumns } from '@/types/ProStrictColumns';
-import { paginateTableRequest } from '@/utils/tableRequest';
 import type { ActionType } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Image, Modal, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useRef } from 'react';
+import { paginateTableRequest } from '@/utils/tableRequest';
+import type { ProStrictColumns } from '@/types/ProStrictColumns';
+import { queryPosts } from '@/services/swagger/postManage';
+import { deletePost } from '@/services/swagger/post';
 
 const Index = () => {
   const actionRef = useRef<ActionType>();
@@ -91,6 +91,8 @@ const Index = () => {
     {
       title: 'Action',
       valueType: 'option',
+      width: 'auto',
+      fixed: 'right',
       render(_, record) {
         return [
           <Typography.Link

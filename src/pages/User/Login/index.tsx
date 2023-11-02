@@ -1,5 +1,3 @@
-import { loginWithEmail } from '@/services/swagger/user';
-import { getPageQuery } from '@/utils/getPageQuery';
 import {
   GithubOutlined,
   GoogleCircleFilled,
@@ -13,6 +11,8 @@ import { history, useModel, useMutation } from '@umijs/max';
 import { Form, message } from 'antd';
 import React, { useEffect } from 'react';
 import { flushSync } from 'react-dom';
+import { getPageQuery } from '@/utils/getPageQuery';
+import { loginWithEmail } from '@/services/swagger/user';
 
 const ActionIcons = () => {
   const langClassName = useEmotionCss(({ token }) => {
@@ -31,7 +31,7 @@ const ActionIcons = () => {
 
   const login = (app: string) => {
     const redirect = getPageQuery('redirect') || window.location.origin;
-    window.location.href = `https://powerfulyang.com/api/user/${app}/auth?redirect=${encodeURIComponent(
+    window.location.href = `https://api.powerfulyang.com/api/user/${app}/auth?redirect=${encodeURIComponent(
       redirect,
     )}`;
   };

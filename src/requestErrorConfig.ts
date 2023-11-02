@@ -43,4 +43,8 @@ export const errorConfig: RequestConfig = {
       return response;
     },
   ],
+
+  withCredentials: true,
+
+  baseURL: process.env.NODE_ENV === 'development' ? '' : 'https://api.powerfulyang.com',
 };

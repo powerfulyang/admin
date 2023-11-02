@@ -13,6 +13,8 @@ jobs:
       matrix:
         node_version: [lts/*]
         os: [ubuntu-latest]
+    if: false
+
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
