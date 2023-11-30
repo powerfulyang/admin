@@ -14,7 +14,7 @@ if (REACT_APP_ENV === 'qa') {
 }
 
 if (REACT_APP_ENV === 'prod') {
-  swaggerUrl = 'https://powerfulyang.com/api/swagger-json';
+  swaggerUrl = 'https://api.powerfulyang.com/api/swagger-json';
 }
 
 export default defineConfig({

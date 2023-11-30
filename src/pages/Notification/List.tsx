@@ -1,3 +1,6 @@
+import { PageContainer, ProTable } from '@ant-design/pro-components';
+import { Typography } from 'antd';
+import { getDefaultStore } from 'jotai';
 import {
   SendNotificationModal,
   SendNotificationModalAtom,
@@ -5,9 +8,6 @@ import {
 import { webPushSubscribeList } from '@/services/swagger/webPush';
 import type { ProStrictColumns } from '@/types/ProStrictColumns';
 import { paginateTableRequest } from '@/utils/tableRequest';
-import { PageContainer, ProTable } from '@ant-design/pro-components';
-import { Typography } from 'antd';
-import { getDefaultStore } from 'jotai';
 
 const List = () => {
   const columns: ProStrictColumns<API.PushSubscriptionLog>[] = [
@@ -39,6 +39,7 @@ const List = () => {
       title: '操作',
       valueType: 'option',
       fixed: 'right',
+      width: 'auto',
       render(_, record) {
         return (
           <Typography.Link

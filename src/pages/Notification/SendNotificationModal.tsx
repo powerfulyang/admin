@@ -1,10 +1,10 @@
-import { webPushSendNotification } from '@/services/swagger/webPush';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 import { useMutation } from '@umijs/max';
 import { Modal } from 'antd';
 import { atom, useAtom } from 'jotai';
 import type { FC } from 'react';
 import { useEffect } from 'react';
+import { webPushSendNotification } from '@/services/swagger/webPush';
 
 /**
  * @description 控制操作的主键ID, 用于新建和编辑
@@ -61,6 +61,9 @@ export const SendNotificationModal: FC<Props> = ({ onOk }) => {
         }}
         layout="horizontal"
         submitter={false}
+        labelCol={{
+          span: 4,
+        }}
         form={form}
       >
         <ProFormText name="subscribeId" hidden />

@@ -17,6 +17,9 @@ const Index = () => {
     {
       title: 'content',
       dataIndex: 'content',
+      render: (text) => {
+        return <div className="max-w-[500px] whitespace-pre-wrap break-all">{text}</div>;
+      },
     },
     {
       title: 'createBy',
