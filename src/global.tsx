@@ -5,10 +5,9 @@ const isDev = process.env.NODE_ENV === 'development';
 export const system = {
   name: 'system',
   url: isDev ? 'http://localhost:9000' : 'https://system.powerfulyang.com',
-  'keep-alive': true,
   'disable-memory-router': true,
+  'disable-patch-request': true,
 };
 
-microApp.start({
-  preFetchApps: [system],
-});
+microApp.preFetch([system]);
+microApp.start();

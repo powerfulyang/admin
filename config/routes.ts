@@ -88,6 +88,16 @@ export default [
         ],
       },
       {
+        path: '/logs',
+        access: 'canAdmin',
+        routes: [
+          {
+            path: '/logs/list',
+            component: './Logs/List',
+          },
+        ],
+      },
+      {
         path: '*',
         component: './404',
       },

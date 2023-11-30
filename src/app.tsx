@@ -69,7 +69,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState, loa
       request: async () => {
         const menus = await queryCurrentUserMenus();
         return menus.map((menu) => {
-          return { ...menu, icon: iconMap['user-manage'] };
+          return { ...menu, icon: iconMap['user-manage'] } as any;
         });
       },
       locale: false,

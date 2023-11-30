@@ -1,9 +1,9 @@
-import { AssetControllerPHashMap } from '@/services/swagger/asset';
-import { queryPublicAssetById } from '@/services/swagger/publicApi';
 import { PageContainer } from '@ant-design/pro-components';
 import { useQuery } from '@umijs/max';
 import { Image, Spin } from 'antd';
 import type { FC } from 'react';
+import { queryPublicAssetById } from '@/services/swagger/open';
+import { AssetControllerPHashMap } from '@/services/swagger/asset';
 
 const AssetImage: FC<{ id: number }> = ({ id }) => {
   const { data } = useQuery({

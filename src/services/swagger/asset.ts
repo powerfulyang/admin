@@ -34,10 +34,15 @@ export async function saveAssetToBucket(
     const item = (body as any)[ele];
 
     if (item !== undefined && item !== null) {
-      formData.append(
-        ele,
-        typeof item === 'object' && !(item instanceof File) ? JSON.stringify(item) : item,
-      );
+      if (typeof item === 'object' && !(item instanceof File)) {
+        if (item instanceof Array) {
+          item.forEach((f) => formData.append(ele, f || ''));
+        } else {
+          formData.append(ele, JSON.stringify(item));
+        }
+      } else {
+        formData.append(ele, item);
+      }
     }
   });
 
@@ -69,14 +74,6 @@ export async function queryAssets(
     params: {
       ...params,
     },
-    ...(options || {}),
-  });
-}
-
-/** 此处后端没有提供注释 GET /api/asset/sync */
-export async function AssetControllerSyncAllFromCos(options?: { [key: string]: any }) {
-  return request<any>('/api/asset/sync', {
-    method: 'GET',
     ...(options || {}),
   });
 }

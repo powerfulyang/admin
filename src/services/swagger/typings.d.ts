@@ -3,78 +3,74 @@ declare namespace API {
     id: number;
     bucket: CosBucket;
     objectUrl: {
-      webp: string;
-      original: string;
-      thumbnail_300_: string;
-      thumbnail_700_: string;
-      thumbnail_blur_: string;
+      webp?: string;
+      original?: string;
+      thumbnail_300_?: string;
+      thumbnail_700_?: string;
+      thumbnail_blur_?: string;
     };
     originUrl: string;
     sn: string;
     tags: string[];
     comment: string;
-    /** 需要注意，这里的值是不带 `.` 的 */
     fileSuffix: string;
     sha1: string;
     pHash: string;
     exif: Record<string, any>;
     metadata: Record<string, any>;
-    size: { width: number; height: number };
+    size: any;
     uploadBy: User;
     createdAt: string;
     updatedAt: string;
+    alt: string;
   };
 
-  type ChatGPTPayload = {
-    message: string;
-    parentMessageId?: string;
-    conversationId?: string;
+  type BucketControllerBackupParams = {
+    accountId: string;
   };
 
   type CosBucket = {
+    id: number;
     /** bucket 在系统中的名称 */
     name: string;
-    id: number;
     Bucket: string;
     Region: string;
     ACL: Record<string, any>;
-    CORSRules: Record<string, any>[];
+    CORSRules: string[];
     RefererConfiguration: Record<string, any>;
     createdAt: string;
     updatedAt: string;
-    tencentCloudAccount: Record<string, any>;
+    tencentCloudAccount: TencentCloudAccount;
     assets: Asset[];
     public: boolean;
   };
 
   type CreateBucketDto = {
+    id?: number;
     /** bucket 在系统中的名称 */
     name?: string;
-    Region: string;
-    tencentCloudAccount: Record<string, any>;
-    id?: number;
     Bucket?: string;
+    Region?: string;
     ACL?: Record<string, any>;
-    CORSRules?: Record<string, any>[];
+    CORSRules?: string[];
     RefererConfiguration?: Record<string, any>;
     createdAt?: string;
     updatedAt?: string;
+    tencentCloudAccount?: TencentCloudAccount;
     assets?: Asset[];
     public?: boolean;
   };
 
   type CreateFeedDto = {
-    /** timeline item content */
     content: string;
+    createBy: User;
     assets: any[];
     public?: boolean;
-    createBy: User;
   };
 
   type CreatePostDto = {
-    title: string;
-    content: string;
-    posterId?: number;
+    title?: string;
+    content?: string;
     summary?: string;
     tags?: string[];
     public?: boolean;
@@ -85,6 +81,7 @@ declare namespace API {
     logs?: PostLog[];
     createdAt?: string;
     updatedAt?: string;
+    posterId?: number;
   };
 
   type CreateRoleDto = {
@@ -93,7 +90,7 @@ declare namespace API {
     /** 权限列表 */
     permissions: string[];
     /** 角色拥有的菜单 */
-    menus?: number[];
+    menus?: string[];
   };
 
   type CreateTencentCloudAccountDto = {
@@ -143,11 +140,8 @@ declare namespace API {
   };
 
   type Feed = {
-    /** timeline item id */
     id: number;
-    /** timeline item content */
     content: string;
-    /** timeline item assets */
     assets: Asset[];
     public: boolean;
     createBy: User;
@@ -157,7 +151,6 @@ declare namespace API {
   };
 
   type FeedControllerRemoveParams = {
-    /** timeline item id */
     id: number;
   };
 
@@ -171,6 +164,13 @@ declare namespace API {
     take?: number;
   };
 
+  type infiniteQueryPublicPostParams = {
+    prevCursor?: string;
+    nextCursor?: string;
+    take?: number;
+    publishYear?: number;
+  };
+
   type infiniteQueryPublicTimelineParams = {
     prevCursor?: string;
     nextCursor?: string;
@@ -182,16 +182,12 @@ declare namespace API {
     nextCursor?: number;
   };
 
-  type LogsViewerControllerListLogsParams = {
-    container: string;
-  };
-
   type Menu = {
     id: number;
     name: string;
     path: string;
-    children: Menu[];
-    parent: Menu;
+    children: Record<string, any>;
+    parent: Record<string, any>;
     parentId: number;
     createdAt: string;
     updatedAt: string;
@@ -228,6 +224,10 @@ declare namespace API {
     updatedAt: string;
   };
 
+  type OCRDto = {
+    images: any[];
+  };
+
   type PaginatedBaseQuery = {
     /** 每页条数 */
     pageSize: number;
@@ -236,10 +236,8 @@ declare namespace API {
   };
 
   type PatchPostDto = {
-    id: number;
-    title: string;
-    content: string;
-    posterId?: number;
+    title?: string;
+    content?: string;
     summary?: string;
     tags?: string[];
     public?: boolean;
@@ -250,6 +248,8 @@ declare namespace API {
     logs?: PostLog[];
     createdAt?: string;
     updatedAt?: string;
+    id: number;
+    posterId?: number;
   };
 
   type Post = {
@@ -277,7 +277,7 @@ declare namespace API {
     updatedAt: string;
   };
 
-  type PushSubscriptionJSON = {
+  type PushSubscriptionJSONDto = {
     endpoint?: string;
     expirationTime?: number;
     keys?: Record<string, any>;
@@ -285,7 +285,7 @@ declare namespace API {
 
   type PushSubscriptionLog = {
     id: number;
-    pushSubscriptionJSON: PushSubscriptionJSON;
+    pushSubscriptionJSON: PushSubscriptionJSONDto;
     endpoint: string;
     user?: User;
     createdAt: string;
@@ -297,11 +297,11 @@ declare namespace API {
     pageSize: number;
     /** 当前页码 */
     current: number;
+    id: number;
+    originUrl: string;
+    sha1: string;
     createdAt?: string[];
     updatedAt?: string[];
-    id: number;
-    sha1: string;
-    originUrl: string;
   };
 
   type queryFeedsParams = {
@@ -309,7 +309,6 @@ declare namespace API {
     pageSize: number;
     /** 当前页码 */
     current: number;
-    /** timeline item id */
     id: number;
   };
 
@@ -335,16 +334,16 @@ declare namespace API {
     /** 当前页码 */
     current: number;
     id: number;
+    title: string;
+    content: string;
+    summary: string;
+    public: boolean;
+    createBy: User;
+    poster: Asset;
     /** 创建时间 */
     createdAt: string[];
     /** 更新时间 */
     updatedAt: string[];
-    title: string;
-    content: string;
-    public: boolean;
-    summary: string;
-    poster: Asset;
-    createBy: User;
   };
 
   type queryPublicAssetByIdParams = {
@@ -356,8 +355,22 @@ declare namespace API {
     versions: string[];
   };
 
-  type queryPublicPostsParams = {
-    publishYear?: number;
+  type QueryRequestLogDto = {
+    /** 每页条数 */
+    pageSize: number;
+    /** 当前页码 */
+    current: number;
+    /** 创建时间 */
+    createdAt: string[];
+    /** 更新时间 */
+    updatedAt: string[];
+    id: number;
+    requestId: string;
+    ip: string;
+    path: string;
+    referer: string;
+    userAgent: string;
+    statusCode: number;
   };
 
   type queryRoleByIdParams = {
@@ -401,6 +414,28 @@ declare namespace API {
     size: string;
   };
 
+  type RequestLog = {
+    id: number;
+    path: string;
+    ip: string;
+    ipInfo: string;
+    method: string;
+    statusCode: number;
+    contentLength: string;
+    processTime: string;
+    referer: string;
+    userAgent: string;
+    requestId: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+
+  type RequestLogDto = {
+    createdAt: string;
+    requestCount: number;
+    distinctIpCount: number;
+  };
+
   type Role = {
     id: number;
     name: string;
@@ -416,17 +451,25 @@ declare namespace API {
     bucketName: string;
   };
 
+  type TencentCloudAccount = {
+    id: number;
+    name: string;
+    SecretId: string;
+    SecretKey: string;
+    AppId: string;
+    buckets: CosBucket[];
+  };
+
   type triggerScheduleParams = {
-    scheduleType: string;
+    scheduleType: any;
   };
 
   type UpdateFeedDto = {
-    /** timeline item content */
     content: string;
     assets: any[];
-    id: number;
     public: boolean;
     updateBy: User;
+    id: number;
   };
 
   type UploadAssetsDto = {
@@ -459,11 +502,5 @@ declare namespace API {
     email: string;
     /** User password */
     password: string;
-  };
-
-  type ViewCountDto = {
-    createdAt: string;
-    requestCount: number;
-    distinctIpCount: number;
   };
 }

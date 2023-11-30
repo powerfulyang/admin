@@ -9,15 +9,16 @@ import * as userManage from './userManage';
 import * as asset from './asset';
 import * as tencentCloudAccount from './tencentCloudAccount';
 import * as bucket from './bucket';
+import * as tools from './tools';
+import * as feed from './feed';
+import * as feedManage from './feedManage';
 import * as github from './github';
 import * as post from './post';
 import * as postManage from './postManage';
-import * as publicApi from './publicApi';
+import * as open from './open';
 import * as random from './random';
-import * as feed from './feed';
-import * as feedManage from './feedManage';
+import * as requestLogManage from './requestLogManage';
 import * as schedule from './schedule';
-import * as logsViewer from './logsViewer';
 import * as miniProgram from './miniProgram';
 import * as FcmControllerSubscribe from './FcmControllerSubscribe';
 import * as webPush from './webPush';
@@ -29,15 +30,16 @@ export default {
   asset,
   tencentCloudAccount,
   bucket,
+  tools,
+  feed,
+  feedManage,
   github,
   post,
   postManage,
-  publicApi,
+  open,
   random,
-  feed,
-  feedManage,
+  requestLogManage,
   schedule,
-  logsViewer,
   miniProgram,
   FcmControllerSubscribe,
   webPush,

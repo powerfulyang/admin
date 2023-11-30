@@ -7,7 +7,7 @@ export async function webPushSendNotification(
   body: API.NotificationDto,
   options?: { [key: string]: any },
 ) {
-  return request<Record<string, any>>('/api/web-push/send-notification', {
+  return request<any>('/api/web-push/send-notification', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -19,7 +19,7 @@ export async function webPushSendNotification(
 
 /** 订阅推送 POST /api/web-push/subscribe */
 export async function webPushSubscribe(
-  body: API.PushSubscriptionJSON,
+  body: API.PushSubscriptionJSONDto,
   options?: { [key: string]: any },
 ) {
   return request<API.PushSubscriptionLog>('/api/web-push/subscribe', {

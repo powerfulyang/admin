@@ -31,18 +31,6 @@ export async function queryPublicAssetById(
   });
 }
 
-/** 与chat gpt聊天 POST /api/public/chat-gpt/chat */
-export async function chatWithChatGPT(body: API.ChatGPTPayload, options?: { [key: string]: any }) {
-  return request<API.ChatGPTPayload>('/api/public/chat-gpt/chat', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 获取所有的公开时间线 GET /api/public/feed */
 export async function infiniteQueryPublicTimeline(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -67,12 +55,12 @@ export async function hello(options?: { [key: string]: any }) {
 }
 
 /** 获取所有的公开文章列表 GET /api/public/post */
-export async function queryPublicPosts(
+export async function infiniteQueryPublicPost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.queryPublicPostsParams,
+  params: API.infiniteQueryPublicPostParams,
   options?: { [key: string]: any },
 ) {
-  return request<API.Post[]>('/api/public/post', {
+  return request<API.InfiniteQueryResponse & { resources?: API.Post[] }>('/api/public/post', {
     method: 'GET',
     params: {
       ...params,
@@ -107,7 +95,7 @@ export async function queryPublicPostTags(options?: { [key: string]: any }) {
 
 /** 获取所有的公开文章的年份列表 GET /api/public/post/years */
 export async function queryPublicPostYears(options?: { [key: string]: any }) {
-  return request<number[]>('/api/public/post/years', {
+  return request<{ publishYear?: number; updatedAt?: string }[]>('/api/public/post/years', {
     method: 'GET',
     ...(options || {}),
   });
@@ -115,7 +103,7 @@ export async function queryPublicPostYears(options?: { [key: string]: any }) {
 
 /** 此处后端没有提供注释 GET /api/public/view-count */
 export async function PublicControllerViewCount(options?: { [key: string]: any }) {
-  return request<API.ViewCountDto[]>('/api/public/view-count', {
+  return request<API.RequestLogDto[]>('/api/public/view-count', {
     method: 'GET',
     ...(options || {}),
   });
